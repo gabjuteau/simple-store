@@ -1,39 +1,56 @@
 import {useRef} from "react";
 import emailjs from "@emailjs/browser";
 
-function Contact() {
-    const form = useRef();
-
-    const sendEmail = (e) => {
-        e.preventDefault();
+function Contact({type}) {
+  const form = useRef();
     
-        emailjs.sendForm('service_6a0ej8f', 'template_audwrdq', form.current, 'r6w_nMgL5XFkLiU7z')
-          .then((result) => {
-              console.log(result.text);
-          }, (error) => {
-              console.log(error.text);
-          });
+  const sendEmail = (e) => {
+    e.preventDefault();
+    
+    const template_type = (type == "contact-us") ? "template_audwrdq" : "template_k5pvap2";
 
-          e.target.reset();
-      };
+    emailjs.sendForm("service_6a0ej8f", template_type, form.current, "r6w_nMgL5XFkLiU7z")
+    .then((result) => {
+      console.log(result.text);
+    }, (error) => {
+      console.log(error.text);
+    });
 
-    return (
-        <section>
-            <div className="container">
-                <h2 className="--text-center">Contact Us</h2>
+    e.target.reset();
+  };
 
-                <form ref={form} onSubmit={sendEmail} className="--form-control --card --flex-center --dir-column">
-                    <input type="text" placeholder="Full Name" name="user_name" required></input>
-                    <input type="email" placeholder="Email" name="user_email" required></input>
-                    <input type="text" placeholder="Subject" name="subject" required></input>
-                    <textarea name="message" cols="30" rows="10"></textarea>
+  return (
+    <section className="flex-columns center">
+      <div className="row">
+        <div className="column">
+            <div className="column-1 bg-light">
+              <h2>Contact Us</h2>
 
-                    <button type="submit" className="--btn --btn-primary">Send Message</button>
+              <form ref={form} onSubmit={sendEmail} className="callback-form">
+              <div className="form-control">
+                <input type="text" placeholder="Full Name" name="user_name" required></input>
+              </div>
 
-                </form>
-            </div>  
-        </section>
-    )
+              <div className="form-control">
+                <input type="email" placeholder="Email" name="user_email" required></input>
+              </div>
+
+              <div className="form-control">
+                <input type="text" placeholder="Subject" name="subject" required></input>
+              </div>
+
+              <div className="form-control">
+                <textarea name="message" cols="30" rows="10"></textarea>
+              </div>
+
+              <button type="submit" className="btn btn-primary">Send Message</button>
+
+              </form>
+            </div>
+        </div>
+      </div>  
+    </section>
+  );
 }
 
-export default Contact
+export default Contact;
